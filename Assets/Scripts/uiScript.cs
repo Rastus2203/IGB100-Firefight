@@ -17,6 +17,8 @@ public class uiScript : MonoBehaviour
         playerScriptVar = player.GetComponent<playerScript>();
         uiCanvas = GameObject.FindWithTag("canvas");
 
+
+
     }
 
     // Update is called once per frame
@@ -31,6 +33,9 @@ public class uiScript : MonoBehaviour
 
         float currentHealth = playerScriptVar.health;
         uiCanvas.transform.GetChild(3).GetComponent<Text>().text = string.Format("Health: {0:0}", currentHealth);
+
+        int score = transform.gameObject.GetComponent<gameManager>().score;
+        uiCanvas.transform.GetChild(4).GetComponent<Text>().text = string.Format("Score: {0:0}", score);
 
     }
 

@@ -77,7 +77,7 @@ public class playerScript : MonoBehaviour
             nearAnimal = true;
             if (Input.GetKey("e"))
             {
-                Destroy(other.gameObject);
+                other.gameObject.GetComponent<animalScript>().onRescue();
             }
         } else if (other.tag == "tree")
         {

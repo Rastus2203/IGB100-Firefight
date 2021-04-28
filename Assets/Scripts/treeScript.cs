@@ -8,13 +8,17 @@ public class treeScript : MonoBehaviour
     public bool onFire = true;
 
     GameObject fireParticles;
-
+    GameObject gameManager;
+    GameObject lavaParticles;
+    
 
 
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.FindWithTag("gameManager");
         fireParticles = transform.Find("fireParticle").gameObject;
+        lavaParticles = transform.Find("lavaParticle").gameObject;
     }
 
     // Update is called once per frame
@@ -31,10 +35,19 @@ public class treeScript : MonoBehaviour
         if (health > 0)
         {
             health -= 50f * Time.deltaTime;
-        } else
+        } else if (health <= 0 && onFire)
         {
-            onFire = false;
-        }
+            extinguish();
+        } 
         
+    }
+
+    void extinguish()
+    {
+        gameManager.GetComponent<gameManager>().incrementTreeScore();
+        onFire = false;
+        lavaParticles.gameObject.SetActive(false);
+
+        transform.GetComponent<SphereCollider>().enabled = false;
     }
 }
