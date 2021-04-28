@@ -33,6 +33,7 @@ public class playerScript : MonoBehaviour
 
     float animalRefresh;
 
+    ParticleSystem particleSystem;
 
     RaycastHit hit;
     Ray ray;
@@ -45,6 +46,9 @@ public class playerScript : MonoBehaviour
 
         lastJump = Time.time;
         animalRefresh = Time.time;
+
+
+        particleSystem = transform.GetChild(1).GetChild(1).gameObject.GetComponent<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -104,6 +108,7 @@ public class playerScript : MonoBehaviour
         if (Input.GetMouseButton(0) && waterLevel > 0)
         {
             waterLevel -= 0.1f;
+            particleSystem.Play(); // SetActive(true);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
             {
                 Debug.Log("a");
@@ -113,7 +118,11 @@ public class playerScript : MonoBehaviour
                     hit.collider.gameObject.GetComponent<treeScript>().damage();
                 }
             }
+        } else
+        {
+            particleSystem.Stop(); // SetActive(false);
         }
+
     }
 
     void doMouseTurn()

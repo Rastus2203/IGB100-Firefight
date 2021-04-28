@@ -25,17 +25,17 @@ public class uiScript : MonoBehaviour
     void Update()
     {
         float currentWater = playerScriptVar.waterLevel;
-        uiCanvas.transform.GetChild(0).GetComponent<Text>().text = string.Format("Water: {0:0}", currentWater);
+        uiCanvas.transform.GetChild(1).GetComponent<Text>().text = string.Format("Water: {0:0}", currentWater);
 
-        uiCanvas.transform.GetChild(1).GetComponent<Image>().enabled = (playerScriptVar.nearHydrant);
+        uiCanvas.transform.GetChild(2).GetComponent<Image>().enabled = (playerScriptVar.nearHydrant);
 
-        uiCanvas.transform.GetChild(2).GetComponent<Image>().enabled = (playerScriptVar.nearAnimal);
+        uiCanvas.transform.GetChild(3).GetComponent<Image>().enabled = (playerScriptVar.nearAnimal);
 
         float currentHealth = playerScriptVar.health;
-        uiCanvas.transform.GetChild(3).GetComponent<Text>().text = string.Format("Health: {0:0}", currentHealth);
+        uiCanvas.transform.GetChild(4).GetComponent<Text>().text = string.Format("Health: {0:0}", currentHealth);
 
         int score = transform.gameObject.GetComponent<gameManager>().score;
-        uiCanvas.transform.GetChild(4).GetComponent<Text>().text = string.Format("Score: {0:0}", score);
+        uiCanvas.transform.GetChild(5).GetComponent<Text>().text = string.Format("Score: {0:0}", score);
 
     }
 
