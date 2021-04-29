@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class playerScript : MonoBehaviour
 {
-    public float speed = 3f;
+    public float speed = 2.6f;
     float maxSpeed = 10f;
-    float gravity = -0.01f;
-    public float jumpVelocity = 40f;
+    float gravity = -0.005f;
+    public float jumpVelocity = 35f;
 
     float lastJump;
 

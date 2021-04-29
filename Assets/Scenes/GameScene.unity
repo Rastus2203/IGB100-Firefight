@@ -5248,8 +5248,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91f91328c18b65f46981af5f54def83a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  jumpVelocity: 0.2
+  speed: 2.6
+  jumpVelocity: 0.14
   velocity: {x: 0, y: 0, z: 0}
   test: {x: 0, y: 0}
   forwardTest: {x: 0, y: 0, z: 0}
