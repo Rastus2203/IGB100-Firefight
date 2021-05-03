@@ -6,7 +6,7 @@ public class playerScript : MonoBehaviour
 {
     public float speed = 2.6f;
     float maxSpeed = 10f;
-    float gravity = -0.005f;
+    float gravity = -0.007f;
     public float jumpVelocity = 35f;
 
     float lastJump;
@@ -41,6 +41,8 @@ public class playerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 60;
+
         Cursor.lockState = CursorLockMode.Locked;
         controller = GetComponent<CharacterController>();
 

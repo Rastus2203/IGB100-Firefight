@@ -8,6 +8,8 @@ public class uiScript : MonoBehaviour
     GameObject player;
     playerScript playerScriptVar;
 
+    gameManager manager;
+
     GameObject uiCanvas;
 
     // Start is called before the first frame update
@@ -18,24 +20,26 @@ public class uiScript : MonoBehaviour
         uiCanvas = GameObject.FindWithTag("canvas");
 
 
-
+        manager = GameObject.FindWithTag("gameManager").GetComponent<gameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        float currentWater = playerScriptVar.waterLevel;
-        uiCanvas.transform.GetChild(1).GetComponent<Text>().text = string.Format("Water: {0:0}", currentWater);
+        uiCanvas.transform.GetChild(1).GetComponent<Image>().enabled = (playerScriptVar.nearHydrant);
 
-        uiCanvas.transform.GetChild(2).GetComponent<Image>().enabled = (playerScriptVar.nearHydrant);
-
-        uiCanvas.transform.GetChild(3).GetComponent<Image>().enabled = (playerScriptVar.nearAnimal);
-
-        float currentHealth = playerScriptVar.health;
-        uiCanvas.transform.GetChild(4).GetComponent<Text>().text = string.Format("Health: {0:0}", currentHealth);
+        uiCanvas.transform.GetChild(2).GetComponent<Image>().enabled = (playerScriptVar.nearAnimal);
 
         int score = transform.gameObject.GetComponent<gameManager>().score;
-        uiCanvas.transform.GetChild(5).GetComponent<Text>().text = string.Format("Score: {0:0}", score);
+        uiCanvas.transform.GetChild(3).GetComponent<Text>().text = string.Format("Score: {0:0}", score);
+
+
+        float timeRemaining = manager.totalTime - Time.time;
+        int minutes = ((int)timeRemaining) / 60;
+        int seconds = ((int)timeRemaining) % 60;
+
+
+        uiCanvas.transform.GetChild(4).GetComponent<Text>().text = string.Format("Timer: {0}:{1:00}", minutes, seconds);
 
     }
 

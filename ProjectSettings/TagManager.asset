@@ -9,6 +9,7 @@ TagManager:
   - hydrant
   - animal
   - gameManager
+  - sceneManager
   layers:
   - Default
   - TransparentFX
