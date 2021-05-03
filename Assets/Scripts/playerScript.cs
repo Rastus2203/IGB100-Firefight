@@ -35,6 +35,17 @@ public class playerScript : MonoBehaviour
 
     ParticleSystem particleSystem;
 
+    float lastHurt;
+    float lastFire;
+
+    AudioSource audioSource;
+    public AudioClip hurt;
+    public AudioClip fireSound;
+    public AudioClip animalRescue;
+
+    AudioSource hoseAudioSource;
+    AudioSource fillingAudioSource;
+
     RaycastHit hit;
     Ray ray;
 
@@ -42,13 +53,18 @@ public class playerScript : MonoBehaviour
     void Start()
     {
         //Application.targetFrameRate = 10;
-
+        lastHurt = Time.time;
+        lastFire = Time.time;
         Cursor.lockState = CursorLockMode.Locked;
         controller = GetComponent<CharacterController>();
 
         lastJump = Time.time;
         animalRefresh = Time.time;
 
+        audioSource = GetComponent<AudioSource>();
+        hoseAudioSource = GameObject.FindWithTag("hose").GetComponent<AudioSource>();
+        fillingAudioSource = GameObject.FindWithTag("filling").GetComponent<AudioSource>();
+        fillingAudioSource.Pause();
 
         particleSystem = transform.GetChild(1).GetChild(1).gameObject.GetComponent<ParticleSystem>();
     }
@@ -65,6 +81,13 @@ public class playerScript : MonoBehaviour
         {
             nearAnimal = false;
         }
+
+
+        if (Time.time - lastFire > 30f)
+        {
+            lastFire = Time.time;
+            audioSource.PlayOneShot(fireSound, 1f);
+        }
     }
 
     void FixedUpdate()
@@ -79,7 +102,14 @@ public class playerScript : MonoBehaviour
             nearHydrant = true;
             if (Input.GetKey("e") && waterLevel <= 100)
             {
+                if (!fillingAudioSource.isPlaying)
+                {
+                    fillingAudioSource.Play();
+                }
                 waterLevel += 20 * Time.fixedDeltaTime;
+            } else
+            {
+                fillingAudioSource.Pause();
             }
 
         } else if (other.tag == "animal")
@@ -88,11 +118,19 @@ public class playerScript : MonoBehaviour
             nearAnimal = true;
             if (Input.GetKey("e"))
             {
+                audioSource.PlayOneShot(animalRescue, 1f);
                 other.gameObject.GetComponent<animalScript>().onRescue();
             }
         } else if (other.tag == "tree")
         {
             health -= 10 * Time.fixedDeltaTime;
+            if (Time.time - lastHurt> 1f)
+            {
+                lastHurt = Time.time;
+                audioSource.PlayOneShot(hurt, 1f);
+            }
+            
+
         }
 
     }
@@ -102,6 +140,7 @@ public class playerScript : MonoBehaviour
         if (other.tag == "hydrant")
         {
             nearHydrant = false;
+            fillingAudioSource.Pause();
         } else if (other.tag == "animal")
         {
             nearAnimal = false;
@@ -114,6 +153,12 @@ public class playerScript : MonoBehaviour
         ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         if (Input.GetMouseButton(0) && waterLevel > 0)
         {
+            if (!hoseAudioSource.isPlaying)
+            {
+                hoseAudioSource.Play();
+            }
+            
+
             waterLevel -= 0.1f;
             particleSystem.Play(); // SetActive(true);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
@@ -125,6 +170,7 @@ public class playerScript : MonoBehaviour
             }
         } else
         {
+            hoseAudioSource.Pause();
             particleSystem.Stop(); // SetActive(false);
         }
 
