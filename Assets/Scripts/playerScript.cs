@@ -6,8 +6,8 @@ public class playerScript : MonoBehaviour
 {
     public float speed = 2.6f;
     float maxSpeed = 10f;
-    float gravity = -0.007f;
-    public float jumpVelocity = 35f;
+    float gravity = -0.5f;
+    public float jumpVelocity = 0.14f;
 
     float lastJump;
 
@@ -41,7 +41,7 @@ public class playerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Application.targetFrameRate = 60;
+        //Application.targetFrameRate = 10;
 
         Cursor.lockState = CursorLockMode.Locked;
         controller = GetComponent<CharacterController>();
@@ -56,7 +56,7 @@ public class playerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        doMovement();
+        //doMovement();
         doMouseTurn();
         shooting();
 
@@ -65,6 +65,11 @@ public class playerScript : MonoBehaviour
         {
             nearAnimal = false;
         }
+    }
+
+    void FixedUpdate()
+    {
+        doMovement();
     }
 
     void OnTriggerStay(Collider other)
@@ -113,10 +118,8 @@ public class playerScript : MonoBehaviour
             particleSystem.Play(); // SetActive(true);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
             {
-                Debug.Log("a");
                 if (hit.collider.tag == "tree")
                 {
-                    Debug.Log("b");
                     hit.collider.gameObject.GetComponent<treeScript>().damage();
                 }
             }
@@ -152,21 +155,21 @@ public class playerScript : MonoBehaviour
     void doMovement()
     {
         Vector2 moveInputs = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        moveInputs *= speed * Time.deltaTime;
-        verticalSpeed += gravity;
+        moveInputs *= speed * Time.fixedDeltaTime;
+        //verticalSpeed += gravity * Time.deltaTime;
         //forwardTest = transform.forward;
         test = moveInputs;
         
         
 
-        if (Input.GetKey("space") && controller.isGrounded && (Time.time - lastJump > 0.1f))
+        if (Input.GetKey("space") && controller.isGrounded && (Time.time - lastJump > 0.5f))
         {
             verticalSpeed = 0;
             Debug.Log("Jump");
             lastJump = Time.time;
-            verticalSpeed += jumpVelocity;
+            verticalSpeed = jumpVelocity;
         }
-
+        
         
         if (verticalSpeed < -0.2f)
         {
@@ -176,12 +179,14 @@ public class playerScript : MonoBehaviour
         isground = controller.isGrounded;
         if (!controller.isGrounded)
         {
-            verticalSpeed += gravity * Time.deltaTime;
-            velocity.y += verticalSpeed;
+            verticalSpeed += gravity * Time.fixedDeltaTime;
         }
 
 
-
+        if (verticalSpeed > 0.1f)
+        {
+            Debug.Log(verticalSpeed);
+        }
 
         Vector3 forwardMove = transform.forward * moveInputs.y * speed;
         controller.Move(new Vector3(forwardMove.x, 0, forwardMove.z));

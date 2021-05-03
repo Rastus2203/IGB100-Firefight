@@ -22,12 +22,14 @@ public class gameManager : MonoBehaviour
     void Start()
     {
         startTime = Time.time;
-        totalTime = 12; //60 * 1;
+        totalTime = 60 * 3;
+        
 
         
         player = GameObject.FindWithTag("MainCamera").GetComponent<playerScript>();
         sceneMan = GameObject.FindWithTag("sceneManager").GetComponent<sceneManager>();
     }
+
 
     // Update is called once per frame
     void Update()

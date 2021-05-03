@@ -34,7 +34,7 @@ public class uiScript : MonoBehaviour
         uiCanvas.transform.GetChild(3).GetComponent<Text>().text = string.Format("Score: {0:0}", score);
 
 
-        float timeRemaining = manager.totalTime - Time.time;
+        float timeRemaining = manager.totalTime - Time.timeSinceLevelLoad;
         int minutes = ((int)timeRemaining) / 60;
         int seconds = ((int)timeRemaining) % 60;
 
